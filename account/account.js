@@ -6,6 +6,7 @@ $(document).ready(function () {
     var password = $("#password").val(); // password 필드 추가
     var phoneNum = $("#phoneNum").val();
     var schoolNum = $("#schoolNum").val();
+    var phoneRegex = /^\d{2,3}\d{3,4}\d{4}$/;
 
     $(".message").removeClass("error success");
 
@@ -14,9 +15,20 @@ $(document).ready(function () {
         .addClass("error")
         .text("빈 칸에 정보를 모두 기입하여 주세요.");
       return;
+    } else if (length(password) <= 8) {
+      $(".message")
+        .addClass("error")
+        .text("비밀번호를 8자리 이상으로 해주세요");
+      return;
     }
-    // 하시발살려줘
-    // AJAX 요청
+
+    if (!phoneRegex.test(phoneNum)) {
+      $(".message")
+        .addClass("error")
+        .text("올바른 전화번호 형식이 아닙니다. ex) 01012345678");
+      return;
+    }
+
     $.ajax({
       url: "signup.php",
       type: "POST",
